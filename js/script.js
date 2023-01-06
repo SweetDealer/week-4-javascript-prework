@@ -1,5 +1,8 @@
-function playGame(playerInput) {
 
+let playerWin = 0;
+let computerWin = 0;
+
+function playGame(playerInput) {
     clearMessages();
 
     const papier = 'papier'
@@ -22,43 +25,61 @@ function playGame(playerInput) {
     function displayResult(argComputerMove, argPlayerMove) {
         if (argComputerMove === kamien && argPlayerMove === papier || argComputerMove === papier && argPlayerMove === nozyce || argComputerMove === nozyce && argPlayerMove === kamien) {
             printMessage('Ty wygrywasz!');
+            playerWin++;
         } else if (argComputerMove === argPlayerMove) {
             printMessage('Remis!');
         } else if (argPlayerMove === 'nieznany ruch') {
             printMessage('Musisz wybrać numer 1, 2 lub 3');
-        } else printMessage('Ty przegrywasz!');
+        } else {
+            printMessage('Ty przegrywasz!');
+            computerWin++;
+        }
+
     }
 
     let randomNumber = Math.floor(Math.random() * 3 + 1);
 
-    console.log('Wylosowana liczba to: ' + randomNumber);
-
     let computerMove = getMoveName(randomNumber);
 
     printMessage('Mój ruch to: ' + computerMove);
-
-    // let playerInput = prompt('Wybierz swój ruch! 1: kamień, 2: papier, 3: nożyce.');
-
-    console.log('Gracz wpisał: ' + playerInput);
 
     let playerMove = getMoveName(playerInput);
 
     printMessage('Twój ruch to: ' + playerMove);
     displayResult(computerMove, playerMove);
 
+    setScore(playerWin, computerWin);
+
 }
 
-let buttonRock = document.getElementById('play-rock');
+
+
+const buttonRock = document.getElementById('play-rock');
 buttonRock.addEventListener('click', function () {
     playGame(1);
 });
 
-let buttonPaper = document.getElementById('play-paper');
+const buttonPaper = document.getElementById('play-paper');
 buttonPaper.addEventListener('click', function () {
     playGame(2)
 });
 
-let buttonScissors = document.getElementById('play-scissors');
+const buttonScissors = document.getElementById('play-scissors');
 buttonScissors.addEventListener('click', function () {
-        playGame(3) 
-    })
+    playGame(3)
+})
+
+
+function setScore(playerWin, computerWin) {
+    document.getElementById('result').textContent = `player ${playerWin} : ${computerWin} computer`;
+}
+
+
+function playRandom(games) {
+    for (let i = 0; i < games; i++) {
+        let randomNumber = Math.floor(Math.random() * 3 + 1);
+        playGame(randomNumber)
+    }
+}
+
+playRandom();
